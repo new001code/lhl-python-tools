@@ -20,5 +20,5 @@ setup(
         "Operating System ::OS Independent",
     ],
     python_requires=">=3.8",
-    install_requires=["loguru~=0.7.2"],
+    install_requires=["loguru~=0.7.2", "PyYAML~=6.0.1", "loguru-config~=0.1.0"],
 )
