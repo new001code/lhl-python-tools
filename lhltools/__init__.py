@@ -1,22 +1,22 @@
 import sys
 from loguru import logger
 
-from loguru_config.loguru_config import LoguruConfig
-
 
 def __init_default_logger():
+    format_ = '<green>{time:YYYY-MM-DD HH:mm:ss.SSS}</green> | <level>{level: <8}</level> ' \
+              '| <magenta>{process}</magenta>:<yellow>{thread}</yellow> ' \
+              '| <cyan>{name}</cyan>:<cyan>{function}</cyan>:<yellow>{line}</yellow> - <level>{message}</level>'
     # logger config
-    logger.level("DEBUG", no=1, color="<green>", icon="🐞")
-    logger.level("INFO", no=2, color="<blue>", icon="ℹ️")
-    logger.level("WARNING", no=3, color="<yellow>", icon="⚠️")
-    logger.level("ERROR", no=4, color="<red>", icon="❌")
+    # logger.level("debug", no=1, color="green", icon="🐞")
+    # logger.level("info", no=2, color="blue", icon="ℹ️")
+    # logger.level("warning", no=3, color="yellow", icon="⚠️")
+    # logger.level("error", no=4, color="red", icon="❌")
     logger.add(
         sink=sys.stdout,
-        format="<green>{time:YYYY-MM-DD HH:mm:ss.SSS}</green> \
-<level>{level: ^6}</level> {level.icon} \
-<cyan>{name}</cyan>:<cyan>{function}</cyan>:<cyan>{line}</cyan> - <level>{message}</level>",
+        format=format_,
         colorize=True,
         enqueue=True,
+        level="DEBUG",
         backtrace=True,
         diagnose=True,
         catch=True,
@@ -32,15 +32,21 @@ def __init_file_config(conf_path):
 
     with open(conf_path, "r") as f:
         conf = safe_load(f)
-        if conf["logger"] is not None:
-            LoguruConfig.load(dict(conf["logger"]))
-        else:
-            pass
+        try:
+            logger.remove()
+            if conf and conf["logger"] is not None:
+                from loguru_config.loguru_config import LoguruConfig
+                LoguruConfig.load(conf["logger"])
+            else:
+                __init_default_logger()
+        except Exception as e:
+            logger.error(f"Error: {e}")
+            logger.remove()
+            __init_default_logger()
 
 
 def __init_lhl_python_tools():
     logger.info("Start initializing `lhl-python-tools` configuration")
-    logger.remove()
     from time import perf_counter_ns
 
     from pathlib import Path
@@ -50,6 +56,7 @@ def __init_lhl_python_tools():
         logger.info("Profile detected.")
         __init_file_config(conf_path)
     else:
+        logger.remove()
         __init_default_config()
     all_end_time = perf_counter_ns()
     timeout = all_end_time - all_start_time
