@@ -1,4 +1,3 @@
-import sys
 from loguru import logger
 
 
@@ -6,6 +5,7 @@ def __init_default_logger():
     format_ = '<green>{time:YYYY-MM-DD HH:mm:ss.SSS}</green> | <level>{level: <8}</level> ' \
               '| <magenta>{process}</magenta>:<yellow>{thread}</yellow> ' \
               '| <cyan>{name}</cyan>:<cyan>{function}</cyan>:<yellow>{line}</yellow> - <level>{message}</level>'
+    import sys
     # logger config
     # logger.level("debug", no=1, color="green", icon="🐞")
     # logger.level("info", no=2, color="blue", icon="ℹ️")
