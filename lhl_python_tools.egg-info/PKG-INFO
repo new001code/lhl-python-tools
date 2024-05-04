@@ -1,0 +1,27 @@
+Metadata-Version: 2.1
+Name: lhl-python-tools
+Version: 0.0.1
+Summary: A package for python dev
+Home-page: https://github.com/new001code/lhl-python-tools
+Author: new001code
+Author-email: lhl_creeper@163.com
+Classifier: Development Status :: 3 - Alpha
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System ::OS Independent
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: loguru~=0.7.2
+Requires-Dist: PyYAML~=6.0.1
+Requires-Dist: loguru-config~=0.1.0
+
+# lhl-python-tools
+
+[toc]
+
+## 安装
+
+```bash
+pip install lhl-python-tools
+```

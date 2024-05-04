@@ -1,25 +1,13 @@
 import threading
-import os
 from concurrent.futures import ThreadPoolExecutor,ProcessPoolExecutor
-from typing import Dict
-
-
-class ThreadPoolNotFoundException(Exception):
-    def __init__(self, message: str):
-        super().__init__(message)
-
-
-class ProcessPoolNotFoundException(Exception):
-    def __init__(self, message: str):
-        super().__init__(message)
-
+from typing import Any,Dict
 
 class AsyncTool(object):
     """
     async tool
     """
-    __thread_pool_map:Dict[str,ThreadPoolExecutor] = {}
-    __process_pool_map:Dict[str, ProcessPoolExecutor] = {}
+    __thread_pool_map:Dict[str, Any] = {}
+    __process_pool_map:Dict[str, Any] = {}
 
     _single_lock = threading.RLock()
 
@@ -43,7 +31,7 @@ class AsyncTool(object):
 
         return self.__thread_pool_map[pool_name]
 
-    def __create_process_pool(self, pool_name: str, max_workers: int):
+    def __create_process_pool(self, pool_name: str, max_workers: int = 10):
         """
         create process pool
         """
@@ -54,30 +42,26 @@ class AsyncTool(object):
 
         return self.__process_pool_map[pool_name]
 
-    def get_thread_pool(self, pool_name: str) -> ThreadPoolExecutor:
+    def get_thread_pool(self, pool_name: str):
         """
         get thread pool
         """
-        if pool_name not in self.__thread_pool_map:
-            raise ThreadPoolNotFoundException(f"thread pool {pool_name} not found")     
-        else:
-            return self.__thread_pool_map[pool_name]
+        pass
 
 
 
 
-    def get_process_pool(self, pool_name: str) -> ProcessPoolExecutor:
+    def get_process_pool(self, pool_name: str):
         """
         get process pool
         """
-        if pool_name not in self.__process_pool_map:
-            raise ProcessPoolNotFoundException(f"process pool {pool_name} not found")
-        else:
-            return self.__process_pool_map[pool_name]
+        pass
     
 
-    def get_default_thread_pool(self) -> ThreadPoolExecutor:
+    def get_default_thread_pool(self):
+        default_pool = self.__create_thread_pool("default")
+        print(type(default_pool))
         return self.__create_thread_pool("default")
 
-    def get_default_process_pool(self) -> ProcessPoolExecutor:
-        return self.__create_process_pool("default", os.cpu_count() or 1)
+    def get_default_process_pool(self):
+        return self.__create_process_pool("default")
