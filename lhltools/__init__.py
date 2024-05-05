@@ -1,9 +1,9 @@
-from concurrent.futures import process
 from typing import Dict
+
 from loguru import logger
 
-thread_pool_conf_map:Dict[str,int] = dict()
-process_pool_conf_map:Dict[str,int] = dict()
+thread_pool_conf_map: Dict[str, int] = dict()
+process_pool_conf_map: Dict[str, int] = dict()
 
 
 def __init_default_logger():
@@ -52,9 +52,14 @@ def __init_file_config(conf_path):
         try:
             if conf and conf["async-tools"] is not None:
                 async_tools_conf = conf["async-tools"]
-                if async_tools_conf and async_tools_conf["thread-pool"] is not None:
-
-
+                if async_tools_conf and async_tools_conf.get("thread-pool") is not None:
+                    global thread_pool_conf_map
+                    thread_pool_conf_map = async_tools_conf["thread-pool"]
+                if async_tools_conf and async_tools_conf.get("process-pool") is not None:
+                    global process_pool_conf_map
+                    process_pool_conf_map = async_tools_conf["process-pool"]
+        except Exception as e:
+            logger.error(f"Error: {e}")
 
 
 def __init_lhl_python_tools():
