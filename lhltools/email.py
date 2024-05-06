@@ -1,0 +1,2 @@
+class EmailTools(object):
+    pass
