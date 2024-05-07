@@ -24,7 +24,7 @@ class AsyncTool(object):
     __thread_pool_map: Dict[str, ThreadPoolExecutor] = {}
     __process_pool_map: Dict[str, ProcessPoolExecutor] = {}
 
-    _single_lock = threading.RLock()
+    __single_lock = threading.RLock()
 
     def __new__(cls):
         if cls.__instance is None:
@@ -34,9 +34,9 @@ class AsyncTool(object):
     @classmethod
     def get_instance(cls):
         if not hasattr(cls, "__instance"):
-            with AsyncTool._single_lock:
+            with AsyncTool.__single_lock:
                 if not hasattr(cls, "__instance"):
-                    AsyncTool.__instance = AsyncTool()
+                    AsyncTool()
         return AsyncTool.__instance
 
     def __create_thread_pool(self, pool_name: str, max_workers: int = 10):
@@ -44,7 +44,7 @@ class AsyncTool(object):
         create thread pool
         """
         if pool_name not in AsyncTool.__thread_pool_map:
-            with AsyncTool._single_lock:
+            with AsyncTool.__single_lock:
                 if pool_name not in AsyncTool.__thread_pool_map:
                     self.__thread_pool_map[pool_name] = ThreadPoolExecutor(
                         max_workers=max_workers
@@ -57,7 +57,7 @@ class AsyncTool(object):
         create process pool
         """
         if pool_name not in AsyncTool.__process_pool_map:
-            with AsyncTool._single_lock:
+            with AsyncTool.__single_lock:
                 if pool_name not in AsyncTool.__process_pool_map:
                     AsyncTool.__process_pool_map[pool_name] = ProcessPoolExecutor(
                         max_workers=max_workers
