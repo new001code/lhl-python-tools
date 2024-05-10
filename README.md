@@ -27,9 +27,6 @@ async-tools:
   thread-pool:
     - thread_name: max_workers
     - default: 10
-  process-pool:
-    - process_name: max_workers
-    - default: 1
   
 # logger, see [loguru-config](https://github.com/erezinman/loguru-config)
 logger:
