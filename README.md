@@ -22,7 +22,7 @@ email:
   user: xxx(your_email@gmail.com)
   password: xxx(your_password_token)
 
-# async-tools, define some thread or process pool information
+# async-tools, define some thread pool information
 async-tools:
   thread-pool:
     - thread_name: max_workers
