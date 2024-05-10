@@ -59,13 +59,21 @@ def __init_file_config(conf_path):
                 async_tools_conf = conf["async-tools"]
                 if async_tools_conf and async_tools_conf.get("thread-pool") is not None:
                     global thread_pool_conf_map
-                    thread_pool_conf_map = async_tools_conf["thread-pool"]
+                    thread_pool_conf_map = {
+                        k: v
+                        for d in async_tools_conf["thread-pool"]
+                        for k, v in d.items()
+                    }
                 if (
                     async_tools_conf
                     and async_tools_conf.get("process-pool") is not None
                 ):
                     global process_pool_conf_map
-                    process_pool_conf_map = async_tools_conf["process-pool"]
+                    process_pool_conf_map = {
+                        k: v
+                        for d in async_tools_conf["process-pool"]
+                        for k, v in d.items()
+                    }
         except Exception as e:
             logger.error(f"Error: {e}")
 

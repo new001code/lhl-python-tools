@@ -69,7 +69,10 @@ class AsyncTool(object):
         """
         get thread pool
         """
-        if pool_name not in self.__thread_pool_map:
+        if (
+            pool_name not in self.__thread_pool_map
+            and pool_name not in thread_pool_conf_map
+        ):
             raise ThreadPoolNotFoundException(f"thread pool {pool_name} not found")
         elif (
             pool_name not in self.__thread_pool_map
@@ -83,6 +86,11 @@ class AsyncTool(object):
         """
         get process pool
         """
+        if (
+            pool_name not in self.__process_pool_map
+            and pool_name not in process_pool_conf_map
+        ):
+            raise ProcessPoolNotFoundException(f"process pool {pool_name} not found")
         if (
             pool_name not in self.__process_pool_map
             and pool_name not in process_pool_conf_map
